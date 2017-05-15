@@ -13,6 +13,8 @@ var autoprefixer = require('gulp-autoprefixer');
 var sourcemaps = require('gulp-sourcemaps');
 
 // include browserSync
+var browserSync = require('browser-sync');
+
 
 //uglify / minify JavaScript
 gulp.task('minify', function() {
@@ -35,7 +37,18 @@ gulp.task('processCSS', function() {
 });
 
 // add default tasks
+gulp.task('default',['minify','processCSS']);
 
 // watch files
+gulp.task('watch', function() {
+    gulp.watch('styles/*.css', ['processCSS']);
+    gulp.watch('js/main.js', ['minify']);
+});
 
 // run a local server
+gulp.task('serve', function(){
+    browserSync.init({
+        server: '.',
+        port: 3000
+    });
+});
