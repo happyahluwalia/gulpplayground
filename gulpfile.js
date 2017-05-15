@@ -15,6 +15,9 @@ var sourcemaps = require('gulp-sourcemaps');
 // include browserSync
 var browserSync = require('browser-sync');
 
+//Used for generating service worker
+var path = require('path');
+var swPrecache = require('sw-precache');
 
 //uglify / minify JavaScript
 gulp.task('minify', function() {
@@ -46,12 +49,32 @@ gulp.task('watch', function() {
 });
 
 // run a local server
-gulp.task('serve',['processCSS','minify'], function(){
+gulp.task('serve',['processCSS','minify','service-worker'], function(){
     browserSync.init({
         server: '.',
         port: 3000
     });
-    gulp.watch('styles/*.css', ['processCSS']).on('change', browserSync.reload);
-    gulp.watch('*.html').on('change', browserSync.reload);
-    gulp.watch('js/main.js',['minify']).on('change',browserSync.reload)
+    gulp.watch('styles/*.css', ['processCSS','service-worker']).on('change', browserSync.reload);
+    gulp.watch('*.html',['service-worker']).on('change', browserSync.reload);
+    gulp.watch('js/*.js',['minify','service-worker']).on('change',browserSync.reload)
+});
+
+//Generate service worker as part of build process
+var paths = {
+    src: './'
+};
+
+gulp.task('service-worker', function(callback){
+
+    swPrecache.write(path.join(paths.src, 'sw.js'),{
+        staticFileGlobs: [
+            paths.src + 'index.html',
+            paths.src + 'build/main.css'
+        ],
+        importScripts: [
+            'node_modules/sw-toolbox/sw-toolbox.js',
+            'js/toolbox-script.js'
+        ],
+        stripPrefix: paths.src
+    }, callback);
 });
