@@ -23,6 +23,7 @@
   "homepage": "https://github.com/happyahluwalia/gulpplayground#readme",
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.0.0",
     "gulp-uglify": "^2.1.2"
   }
 }
