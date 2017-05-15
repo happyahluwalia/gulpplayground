@@ -37,7 +37,7 @@ gulp.task('processCSS', function() {
 });
 
 // add default tasks
-gulp.task('default',['minify','processCSS']);
+gulp.task('default',['serve']);
 
 // watch files
 gulp.task('watch', function() {
@@ -46,9 +46,12 @@ gulp.task('watch', function() {
 });
 
 // run a local server
-gulp.task('serve', function(){
+gulp.task('serve',['processCSS','minify'], function(){
     browserSync.init({
         server: '.',
         port: 3000
     });
+    gulp.watch('styles/*.css', ['processCSS']).on('change', browserSync.reload);
+    gulp.watch('*.html').on('change', browserSync.reload);
+    gulp.watch('js/main.js',['minify']).on('change',browserSync.reload)
 });
