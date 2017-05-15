@@ -5,8 +5,12 @@ var gulp = require('gulp');
 var uglify = require('gulp-uglify');
 
 // include prefixer package
+//https://www.npmjs.com/package/gulp-autoprefixer
 var autoprefixer = require('gulp-autoprefixer');
 
+//include sourcemap package
+//https://www.npmjs.com/package/gulp-sourcemaps
+var sourcemaps = require('gulp-sourcemaps');
 
 // include browserSync
 
@@ -21,10 +25,12 @@ gulp.task('minify', function() {
 // Prefix task
 gulp.task('processCSS', function() {
     gulp.src('styles/main.css')
+        .pipe(sourcemaps.init())
         .pipe(autoprefixer ({
             browsers: ['last 2 versions'],
             cascade: false
         }))
+        .pipe(sourcemaps.write('../maps'))
         .pipe(gulp.dest('build'));
 });
 
