@@ -19,7 +19,7 @@ limitations under the License.
   var future = 2001;
 
   function hal() {
-    console.log('I\'m sorry Dave, I\'m afraid I can\'t do that.');
+    console.log('I\'m going to be minified so that i can go faster over the internet.');
   }
 
   if (future) {
